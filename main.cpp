@@ -3,31 +3,38 @@ using namespace std;
 
 int main(){
 
-    int n = 0;
-    int m = 0;
-    
-    int a = 0;
-
-    double sum = 0;
-    double avg = 0;
-
     FILE *fptr = fopen("newprogram.txt","r");
 
-    fscanf(fptr, "%d,", &n);
+    int n = 0;
+    char line [100];
 
-    for (int i = 0; i < n; i++){
-        
-        fscanf(fptr, "%d,", &m);
-        for(int y = 0; y < m; y++){
-            fscanf(fptr, "%d,", &a);
-            sum += a;
+    int sum = 0;
 
+    for(int i = 0; i < 7; i++){
+
+        fgets(line, 100, fptr);
+        sscanf(line, "%d,", &n);
+
+        for(int y = 1; y < 100; y++){
+
+            const char ch = line[y];
+
+            if(ch == '\0'){
+
+                break;
+            }else if(ch != ' ' && ch != '\n'){
+
+                int a = 0;
+
+                sscanf(&line[y], "%d,", &a);
+                //printf("%d ",a);
+
+                sum += a;
+            }
         }
-        avg = sum / m;
-        sum = 0;
-        cout << avg << endl;
+        cout << sum << endl;
+        sum = 0;   
     }
-
     fclose(fptr);
 
 return 0;
