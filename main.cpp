@@ -8,32 +8,41 @@ int main(){
     int n = 0;
     char line [100];
     int sum = 0;
+    int avg = 0;
 
     for(int i = 0; i < 7; i++){
     
         fgets(line, 100, fptr);
         sscanf(line, "%d,", &n);
 
+        int k = 0;
         for(int y = 0; y < 100; y++){
+            if(k >= n){
+                break;
+            }
 
             const char ch = line[y];
 
             if(ch == '\0'){
-
                 break;
+
             }else if(ch != ' ' && ch != '\n'){
                 if(y > 0 && line[y - 1] == ' '){
 
-                int a = 0;
+                    int a = 0;
 
-                sscanf(&line[y], "%d,", &a);
-                sum += a;
+                    sscanf(&line[y], "%d,", &a);
+
+                    sum += a;
+                    k++;
                 }
             }
         }
-
-        cout << sum << endl;
-        sum = 0;   
+        avg  = sum / n;
+        cout << avg << endl;
+        
+        sum = 0;
+        avg = 0;
     }
     fclose(fptr);
 
