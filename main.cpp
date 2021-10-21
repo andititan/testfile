@@ -1,50 +1,38 @@
 #include <iostream>
+#include <string.h>
 using namespace std;
 
-int main(){
+int getStringLength(char*str){
+    int n = 0;
+    while(str[n] != '\0'){
+        n++;
+    }
+    return n;
+}
 
+int main(){
     FILE *fptr = fopen("newprogram.txt","r");
 
-    int n = 0;
-    char line [100];
+    char line [256];
     
-    int sum = 0;
-    int avg = 0;
-    
-    do{
-        fgets(line, 100, fptr);
-        sscanf(line, "%d,", &n);
+    fgets(line, 256, fptr);
 
-        int k = 0;
-        for(int y = 0; y < 100; y++){
-            if(k >= n){
-                break;
-            }
+    int a = getStringLength(line); 
+    int b = a-1;
 
-            const char ch = line[y];
-            if(ch == '\0'){
-                break;
-
-            }else if(ch != ' ' && ch != '\n'){
-                if(y > 0 && line[y - 1] == ' '){
-
-                    int a = 0;
-
-                    sscanf(&line[y], "%d,", &a);
-
-                    sum += a;
-                    k++;
-                }
-            }
+    for(int i = 0; i < a; i++){
+        int z = 3;
+        if(i != b || line[i - 1] != line[b + 1]){
+            char c;
+            c = line[i];
+            line[i] = line[b];
+            line[b] = c;
+            b--;
+        }else{
+            break;
         }
-        avg  = sum / n;
-        cout << avg << endl;
-
-        sum = 0;
-        avg = 0;
-
-    }while(feof(fptr) == 0);
-
+    }
+    cout << line << endl;
     fclose(fptr);
 
     return 0;
