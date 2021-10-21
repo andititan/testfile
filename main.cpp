@@ -5,10 +5,9 @@ int main(){
 
     FILE *fptr = fopen("newprogram.txt","r");
 
-    int eof();
-
     int n = 0;
     char line [100];
+    
     int sum = 0;
     int avg = 0;
     
