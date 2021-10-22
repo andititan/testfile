@@ -20,17 +20,12 @@ int main(){
     int a = getStringLength(line); 
     int b = a-1;
 
-    for(int i = 0; i < a; i++){
-        int z = 3;
-        if(i != b || line[i - 1] != line[b + 1]){
+    for(int i = 0; i < a/2; i++){
             char c;
             c = line[i];
             line[i] = line[b];
             line[b] = c;
             b--;
-        }else{
-            break;
-        }
     }
     cout << line << endl;
     fclose(fptr);
