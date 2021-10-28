@@ -10,7 +10,7 @@ int getStringLength(char *str){
 }
 
 void getLine(char *str, FILE *file, int size = 0){
-    for(int i = 0; i < size; i++){
+    for(int i = 0; i < size - 1; i++){
         char ch;
         ch = fgetc(file);
 
