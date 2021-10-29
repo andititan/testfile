@@ -9,14 +9,15 @@ int main(){
 		for (int i = 1; i < (n - line + 1); i++){
 			cout << " ";
 		}
-        
-        int a = 1;
 
 		for (int i = 1; i <= line; i++){
-			cout << a << " ";
-			a = a * (line - i) / i;
+			cout << "*";
 		}
-
+        
+        cout << " ";
+        for (int i = 1; i <= line; i++){
+			cout << "*";
+		}
 		cout << "\n";
 	}
     return 0;
