@@ -1,62 +1,68 @@
 #include <iostream>
 using namespace std;
 
-int initialSpaces(int lines, int currentLine){
-	return lines - (currentLine + 1);
-}
-
-void printSpaces(int n) {
-	for(int i = 0; i < n; i++){
-		cout << " ";
-	}	
-}
-
-int firstLine(int n){
-	for(int a = 0; a < initialSpaces(n, 0); a++){
-		cout << " ";
-	}
-
-	for(int i = 0; i < n; i++){
-		cout << "* ";
-	}
-	cout << "\n";
-}
-
-
-int Mid(int n){
-	for(int a = 1; a < n - 1; a ++){
-
-		printSpaces(initialSpaces(n, a));
-		cout << "*";
-		
-		const int spaces2 = a * 2 - 1;
-		printSpaces(spaces2);
-		cout << "*";
-
-		const int spacesMid = 2 * initialSpaces(n, a) - 1;
-		printSpaces(spacesMid);
-		cout << "*";
-
-		printSpaces(spaces2);
-		cout << "*";
-		cout << "\n";
-	}
-}
-
-int Last(int n){
-	for(int i = 0; i < n * 2 - 1; i++){
-		cout << "*" << " ";
-	}
-}
-
 int main(){
+	char player = '@';
+    
+	int m = 0;
     int n = 0;
-    cin >> n;
-    
-    firstLine(n);
 
-	Mid(n);
+    cin >> n;
+    cin >> m;
+
+	char map[200][200];
     
-	Last(n);
-    return 0;
+	int x = m / 2;
+	int y = n / 2;
+
+	char input;
+    while(true){
+		scanf("%c", &input);
+
+		for(int i = 0; i < n; i++){
+			for(int a = 0; a < m; a++){
+				if(i == 0 || i == n - 1 || a == 0 || a == m - 1){
+					map[i][a] = '#';
+				}else{
+					map[i][a] = ' ';
+				}
+			}
+		}
+
+		if(input == 'd'){
+			if(x + 1 == m - 1){
+				break;
+			}else{
+				x++;
+			}
+		}
+		else if(input == 'a'){
+			if(x - 1 == 0){
+				break;
+			}else{
+				x--;
+			}
+		}
+		else if(input == 'w'){
+			if(y - 1 == 0){
+				break;
+			}else{
+				y--;
+			}
+		}
+		else if(input == 's'){
+			if(y + 1 == n - 1){
+				break;
+			}
+			y++;
+		}
+
+		map[y][x] = player;
+
+		for(int i = 0; i < n; i++){
+			printf("%s\n", map[i]);
+		}
+	}
+	
+    return 0;	
 }
