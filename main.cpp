@@ -3,65 +3,59 @@ using namespace std;
 
 int main(){
 	char player = '@';
-    
-	int m = 0;
-    int n = 0;
 
-    cin >> n;
-    cin >> m;
+	FILE *fptr = fopen("newprogram.txt","r");
 
-	char map[200][200];
-    
-	int x = m / 2;
-	int y = n / 2;
+	int x = 1;
+	int y = 1;
+
+    char arr[201][201] = {0};
+
+	char n;
+
+	int MAX = 0;
+
+	for(int i = 0; i < 200; i++){
+		char* c = fgets(arr[i], 200, fptr);
+
+		if(c == 0){
+			MAX = i;
+			break;
+		}
+	}
 
 	char input;
-    while(true){
-		scanf("%c", &input);
 
-		for(int i = 0; i < n; i++){
-			for(int a = 0; a < m; a++){
-				if(i == 0 || i == n - 1 || a == 0 || a == m - 1){
-					map[i][a] = '#';
-				}else{
-					map[i][a] = ' ';
-				}
-			}
-		}
+    while(true){
+		cin >> input;
 
 		if(input == 'd'){
-			if(x + 1 == m - 1){
-				break;
-			}else{
-				x++;
+			if(arr[x][y + 1] != '#'){
+			y++;
 			}
 		}
 		else if(input == 'a'){
-			if(x - 1 == 0){
-				break;
-			}else{
-				x--;
+			if(arr[x][y - 1] != '#'){
+			y--;
 			}
 		}
 		else if(input == 'w'){
-			if(y - 1 == 0){
-				break;
-			}else{
-				y--;
+			if(arr[x - 1][y] != '#'){
+			x--;
 			}
 		}
-		else if(input == 's'){
-			if(y + 1 == n - 1){
-				break;
+		else if(input == 's'){	
+			if(arr[x + 1][y] != '#'){
+			x++;
 			}
-			y++;
 		}
+		arr[x][y] = player;
 
-		map[y][x] = player;
-
-		for(int i = 0; i < n; i++){
-			printf("%s\n", map[i]);
+		for(int i = 0; i < MAX; i ++){
+			cout << arr[i];
 		}
+		cout << "\n";
+		arr[x][y] = ' ';
 	}
 	
     return 0;	
