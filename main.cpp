@@ -27,8 +27,10 @@ int main(){
 	char input;
 
     while(true){
+		
+		
+		system("stty raw");
 		cin >> input;
-
 		if(input == 'd'){
 			if(arr[x][y + 1] != '#'){
 			y++;
@@ -50,12 +52,17 @@ int main(){
 			}
 		}
 		arr[x][y] = player;
-
+		
 		for(int i = 0; i < MAX; i ++){
 			cout << arr[i];
+			cout << "\r";
 		}
-		cout << "\n";
+
+		
 		arr[x][y] = ' ';
+		
+		system("stty cooked");
+		system("clear");
 	}
 	
     return 0;	
