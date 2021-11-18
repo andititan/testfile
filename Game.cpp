@@ -6,18 +6,19 @@ int main(){
 
 	FILE *fptr = fopen("newprogram.txt","r");
 
-	int x = 1;
-	int y = 1;
+	int x = 0;
+	int y = 0;
 
     char arr[201][201] = {0};
-
-	char n;
 
 	int rows = 0;
 
 	int j = 0;
 
-	for(int i = 0; i < 200; i++){
+	fgets(arr[0],200, fptr);
+	sscanf(arr[0], "%d %d", &x, &y);
+
+	for(int i = 1; i < 200; i++){
 		char* c = fgets(arr[i], 200, fptr);
 
 		if(c == 0){
@@ -25,18 +26,23 @@ int main(){
 			break;
 		}
 	}
-
+	
 	for(int i = 0; i < 200; i++){
-		if(arr[0][i] == '\n'){
+		if(arr[1][i] == '\n'){
 			j = i;
 			break;
 		}
 	}
 
-	char input;
+	if(arr[x][y] == '#'){
+		cout << "Ne mojeee";
+		return 0;
+	}
 
+	char input;
+	
+	system("stty raw");
     while(true){
-		system("stty raw");
 		cin >> input;
 		
 		if(input == 'd'){
@@ -61,7 +67,8 @@ int main(){
 		}
 
 		arr[x][y] = player;
-		
+		system("clear");
+
 		for(int i = 0; i < rows; i ++){
 			for(int a = 0; a < j; a++){
 				int radius = 2;
@@ -73,14 +80,11 @@ int main(){
 
 				}
 			}
-
-		printf("\n\r");	
+			printf("\n\r");	
 		}
-		
 		arr[x][y] = ' ';
-		
-		system("stty cooked");
 	}
-	
+	system("stty cooked");
+
     return 0;	
 }
