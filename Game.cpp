@@ -43,6 +43,7 @@ int main(){
 	
 	system("stty raw");
     while(true){
+
 		cin >> input;
 		
 		if(input == 'd'){
@@ -67,24 +68,30 @@ int main(){
 		}
 
 		arr[x][y] = player;
+
 		system("clear");
 
 		for(int i = 0; i < rows; i ++){
-			for(int a = 0; a < j; a++){
-				int radius = 2;
-				if(i < x - radius || i > x + radius || a < y - radius || a > y + radius){
-					cout << " ";
 
+			for(int a = 0; a < j; a++){
+				int radius = 4;
+
+				if((x - i) * (x - i) + (y - a) * (y - a) > 4 * 4){
+					cout << " ";
 				}else{
 					printf("%c", arr[i][a]);
-
 				}
 			}
+
 			printf("\n\r");	
 		}
+
 		arr[x][y] = ' ';
 	}
+
 	system("stty cooked");
+
+	fclose(fptr);
 
     return 0;	
 }
