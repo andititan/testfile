@@ -15,6 +15,8 @@ int main(){
 
 	int j = 0;
 
+	int radius = 3;
+
 	fgets(arr[0],200, fptr);
 	sscanf(arr[0], "%d %d", &x, &y);
 
@@ -67,6 +69,19 @@ int main(){
 			}
 		}
 
+		if(arr[x][y] == 'L'){
+			radius++;
+		}
+
+		if(arr[x][y] == 'l'){
+			radius --;
+		}
+
+		if(arr[x][y] == 'E'){
+			printf("You win!!!!");
+			return 0;
+		}
+
 		arr[x][y] = player;
 
 		system("clear");
@@ -74,12 +89,24 @@ int main(){
 		for(int i = 0; i < rows; i ++){
 
 			for(int a = 0; a < j; a++){
-				int radius = 4;
+				int dx = i - x;
+				int dy = a - y;
+				double tgd = dx / dy;
+				double e = dx * tgd - dy;
 
-				if((x - i) * (x - i) + (y - a) * (y - a) > 4 * 4){
+				if((x - i) * (x - i) + (y - a) * (y - a) > radius * radius){
 					cout << " ";
 				}else{
-					printf("%c", arr[i][a]);
+					if(e > 0.5){
+						if(arr[x + 1][y] == '#'){
+							cout << " ";
+						}
+					}else if(arr[x][y + 1] == '#'){
+							cout << " ";
+					}else{
+						printf("%c", arr[i][a]);
+					}
+					
 				}
 			}
 
