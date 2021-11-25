@@ -1,6 +1,87 @@
 #include <iostream>
 using namespace std;
 
+
+bool isVisible(int x, int y, int x1, int y1, char arr[][201]){
+	int newX = x;
+    int	newY = y;
+
+	float dx = x1 - x;
+	float dy = y1 - y;
+	float tgd = dx / dy;
+	float e = 0;
+
+	while(newX != x1 && newY != y1){
+
+		e += tgd;
+
+		if(dx < x && dy > y){
+			if(e > 0.5){
+				newX--;
+				newY++;
+				e--;
+			}else{
+				newY++;
+			}
+		}
+
+		if(dx < x && dy < y){
+			if(e > 0.5){
+				newX--;
+				newY--;
+				e--;
+			}else{
+				newY--;
+			}
+		}
+
+		if(dx > x && dy < y){
+			if(e > 0.5){
+				newX++;
+				newY--;
+				e--;
+			}else{
+				newY--;
+			}
+		}
+
+		if(dx > x && dy > y){
+			if(e > 0.5){
+				newX++;
+				newY++;
+				e--;
+			}else{
+				newY++;
+			}
+		}
+
+		if(dx < x && dy == 0){
+			newX++;
+		}
+
+		if(dx > x && dy == 0){
+			newX--;
+		}
+
+		if(dx == 0 && dy > y){
+			newY++;
+		}
+
+		if(dx == 0 && dy < y){
+			newY--;
+		}
+
+		if(newX == x1 && newY == y1){
+			return true;
+		}
+		if(arr[newX][newY] == '#'){
+			return false;
+		}
+
+	}
+	return true;
+}
+
 int main(){
 	char player = '*';
 
@@ -89,24 +170,14 @@ int main(){
 		for(int i = 0; i < rows; i ++){
 
 			for(int a = 0; a < j; a++){
-				int dx = i - x;
-				int dy = a - y;
-				double tgd = dx / dy;
-				double e = dx * tgd - dy;
-
 				if((x - i) * (x - i) + (y - a) * (y - a) > radius * radius){
 					cout << " ";
 				}else{
-					if(e > 0.5){
-						if(arr[x + 1][y] == '#'){
-							cout << " ";
-						}
-					}else if(arr[x][y + 1] == '#'){
-							cout << " ";
-					}else{
+					if (isVisible(x,y, i,a, arr) == true) {
 						printf("%c", arr[i][a]);
+					} else {
+						cout << " ";
 					}
-					
 				}
 			}
 
