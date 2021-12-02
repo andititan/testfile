@@ -1,7 +1,8 @@
 #include <iostream>
+#include <assert.h>
 using namespace std;
 
-int Line(int x, int y, int x1 , int y1){
+int Line(int x, int y, int x1 , int y1, char arr[][201]){
     int newX = x;
     int	newY = y;
 
@@ -11,14 +12,14 @@ int Line(int x, int y, int x1 , int y1){
 	float e = 0;
 
     while(newX != x1 || newY != y1){
-
+		
 		e += tgd;
 
 		if(x1 < x && y1 > y){
-			if(e > 0.5){
+			if(e < -0.5){
 				newX--;
 				newY++;
-				e--;
+				e++;
 			}else{
 				newY++;
 			}
@@ -35,10 +36,10 @@ int Line(int x, int y, int x1 , int y1){
 		}
 
 		if(x1 > x && y1 < y){
-			if(e > 0.5){
+			if(e < -0.5){
 				newX++;
 				newY--;
-				e--;
+				e++;
 			}else{
 				newY--;
 			}
@@ -55,21 +56,25 @@ int Line(int x, int y, int x1 , int y1){
 		}
 
 		if(x1 < x && y1 == y){
-			newX++;
-		}
-
-		if(x1 > x && y1 == 0){
 			newX--;
 		}
 
-		if(x1 == 0 && y1 > y){
+		if(x1 > x && y1 == y){
+			newX++;
+		}
+
+		if(x1 == x && y1 > y){
 			newY++;
 		}
 
-		if(x1 == 0 && y1 < y){
+		if(x1 == x && y1 < y){
 			newY--;
 		}
+		// assert(x1 <= newX);
+		// assert(newY <= y1);
+		arr[newX][newY] = '#';
     }
+	return 0;
 }
 
 int main(){
@@ -87,17 +92,20 @@ int main(){
     int y = radius;
     int x = radius;
 
-    int x1 = 1;
-    int y1 = radius;
+    int x1 = 10;
+    int y1 = 1;
 
     arr[x][y] = '*';
 
-    for(int i = 0; i < rows; i ++){
-        for(int a = 0; a < rows; a++){
-            printf("%c", arr[i][a]);
+    //while(true){
+        Line(x, y, x1, y1, arr);
+        for(int i = 0; i < rows; i ++){
+            for(int a = 0; a < rows; a++){
+                printf("%c", arr[i][a]);
+            }
+        printf("\n");
         }
-        
-    printf("\n");
-    }
+    //}
+    
     return 0;
 }
