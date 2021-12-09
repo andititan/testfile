@@ -64,13 +64,17 @@ int Line(int x, int y, int x1 , int y1, char arr[][201]){
 		}
 
 		if(x1 < x && y1 == y){
-			newX--;
-			arr[newX][newY] = '#';
+			while(newX > x1){
+				newX--;
+				arr[newX][newY] = '#';
+			}	
 		}
 
 		if(x1 > x && y1 == y){
-			newX++;
-			arr[newX][newY] = '#';
+			while(newX < x1){
+				newX++;
+				arr[newX][newY] = '#';
+			}	
 		}
 
 		if(x1 == x && y1 > y){
@@ -101,10 +105,10 @@ int main(){
     int y = radius;
     int x = radius;
 
-    int x1 = 0;
+    int x1 = rows - 1;
     int y1 = radius;
 
-    arr[x][y] = '*';
+	arr[x][y] = '*';
 
 	char input;
 	
