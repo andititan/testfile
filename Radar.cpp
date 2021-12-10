@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 using namespace std;
 
 int Line(int x, int y, int x1 , int y1, char arr[][201]){
@@ -90,48 +91,79 @@ int Line(int x, int y, int x1 , int y1, char arr[][201]){
 	return 0;
 }
 
+int Print(int rows, int radius, int x, int y, int x1, int y1, char arr[][201]){
+	for(int i = 0; i < rows; i ++){
+        	for(int a = 0; a < rows; a++){
+            	arr[i][a] = ' ';
+        	}
+    	}
+
+
+        Line(x, y, x1, y1, arr);
+
+        for(int i = 0; i < rows; i ++){
+            for(int a = 0; a < rows; a++){
+				if((x - i) * (x - i) + (y - a) * (y - a) > radius * radius){
+					cout << "* ";
+				}else{
+					printf("%c ", arr[i][a]);
+				}
+                
+            }
+        	printf("\n\r");
+        }
+}
 int main(){
-    int radius = 8;
+    int radius = 12;
     char arr[201][201] = {0};
 
     int rows = (radius * 2) + 1;
 
-    for(int i = 0; i < rows; i ++){
-        for(int a = 0; a < rows; a++){
-            arr[i][a] = ' ';
-        }
-    }
-
+    
     int y = radius;
     int x = radius;
 
-    int x1 = rows - 1;
+    int x1 = 0;
     int y1 = radius;
 
 	arr[x][y] = '*';
 
 	char input;
-	
+
 	system("stty raw");
 
     while(true){
 
 		system("clear");
 
-        Line(x, y, x1, y1, arr);
-
-        for(int i = 0; i < rows; i ++){
-            for(int a = 0; a < rows; a++){
-                printf("%c", arr[i][a]);
-            }
-        	printf("\n\r");
-        }
-
 		printf("Enter e to move");
 		cin >> input;
 
 		if(input == 'e'){
-			x1++;
+			do{
+				y1++;
+				Print(rows, radius, x, y, x1, y1, arr);
+				usleep(700000);
+			}while(y1 != rows - 1);
+
+			do{
+				x1++;
+				Print(rows, radius, x, y, x1, y1, arr);
+				usleep(700000);
+			}while(x1 != rows - 1);
+
+			do{
+				y1--;
+				Print(rows, radius, x, y, x1, y1, arr);
+				usleep(700000);
+			}while(y1 != 0);
+
+			do{
+				x1--;
+				Print(rows, radius, x, y, x1, y1, arr);
+				usleep(700000);
+			}while(x1 != 0);
+
 		}
     }
 
