@@ -14,10 +14,6 @@ int SetArr(char arr[][201], int x, int y, char V, bool &isSeen){
 	}
 }
 
-// int AddObject(char arr[][201]){
-// 	arr[objectX][objectY] = '$';
-// }
-
 int Line(int x, int y, int x1 , int y1, char arr[][201], bool &isSeen){
     int newX = x;
     int	newY = y;
@@ -116,7 +112,7 @@ int Line(int x, int y, int x1 , int y1, char arr[][201], bool &isSeen){
 	return 0;
 }
 
-int Print(int rows, int radius, int x, int y, int x1, int y1, char arr[][201], bool &isSeen){
+int Print(int rows, int radius, int x, int y, int x1, int y1, char arr[][201], bool &isSeen, bool Add, bool &ObjectSeen){
 	for(int i = 0; i < rows; i ++){
         for(int a = 0; a < rows; a++){
             arr[i][a] = ' ';
@@ -125,14 +121,22 @@ int Print(int rows, int radius, int x, int y, int x1, int y1, char arr[][201], b
 
     Line(x, y, x1, y1, arr, isSeen);
 
-	if(isSeen == true){
+	if(isSeen == true && Add == true){
+		ObjectSeen = true;
+	}else if(isSeen == true && Add == false){
+		ObjectSeen = false;	
+	}
+
+	if(ObjectSeen == true){
 		arr[objectX][objectY] = '$';
+	}else if(ObjectSeen == false){
+		arr[objectX][objectY] = ' ';
 	}
 
 	for(int i = 0; i < rows; i ++){
 		for(int a = 0; a < rows; a++){
 			if((x - i) * (x - i) + (y - a) * (y - a) > radius * radius - 1){
-				cout << "* ";
+			 	cout << "* ";
 			}else{
 				printf("%c ", arr[i][a]);
 			}
@@ -142,7 +146,7 @@ int Print(int rows, int radius, int x, int y, int x1, int y1, char arr[][201], b
 }
 
 int main(){
-    int radius = 12;
+    int radius = 18;
     char arr[201][201] = {0};
 
     int rows = (radius * 2) + 1;
@@ -151,30 +155,37 @@ int main(){
     int x = radius;
 	
 	bool isSeen = false;
+	bool ObjectSeen = false;
+	bool Add = false;
 
     int x1 = 1;
     int y1 = 1;
 
 	char input;
 
-	Print(rows, radius, x, y, x1, y1, arr, isSeen);
+	Print(rows, radius, x, y, x1, y1, arr, isSeen, Add, ObjectSeen);
 
 	system("stty raw");
 
     while(true){
-		cout << "Enter 'e' to move or 'a' to add: ";
+		cout << "Enter 'e' to move, 'a' to add, and 'd' to delete: ";
 		cin >> input;
-
 
 		cout << "'\n";
 		if(input == 'a'){
 			cout << "Enter cordinates: ";
 			cin >> objectX;
 			cin >> objectY;
+			Add = true;
+			
 		}
 		
 		if(input == 'q'){
 			return 0;
+		}
+
+		if(input == 'd'){
+			Add = false;
 		}
 
 		system("clear");
@@ -182,24 +193,25 @@ int main(){
 		if(input == 'e'){
 			if(y1 != rows - 1 && x1 == 1){
 				y1++;
-				Print(rows, radius, x, y, x1, y1, arr, isSeen);
+				Print(rows, radius, x, y, x1, y1, arr, isSeen, Add, ObjectSeen);
 			}
 
 			else if(x1 != rows - 1 && y1 > 1){
 				x1++;
-				Print(rows, radius, x, y, x1, y1, arr, isSeen);
+				Print(rows, radius, x, y, x1, y1, arr, isSeen, Add, ObjectSeen);
 			}
 
 			else if(y1 > 1 && x1 == rows - 1){
 				y1--;
-				Print(rows, radius, x, y, x1, y1, arr, isSeen);
+				Print(rows, radius, x, y, x1, y1, arr, isSeen, Add, ObjectSeen);
 			}
 
 			else if(x1 > 1 && y1 == 1){
 				x1--;
-				Print(rows, radius, x, y, x1, y1, arr, isSeen);
+				Print(rows, radius, x, y, x1, y1, arr, isSeen, Add, ObjectSeen);
 			}
 		}	
+		isSeen = false;
     }
 	system("stty cooked");
 
