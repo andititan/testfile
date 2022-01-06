@@ -11,32 +11,44 @@ struct Point{
 	int y;
 };
 
-int setArr(char arr[][201], int x, int y, char V, bool &isSeen){
-	if(objectX == x && objectY == y){
-		isSeen = true;
-	}else{
-		arr[x][y] = V;
+struct Object{
+	Point pos;
+	bool Add;
+	bool isSeen;
+	bool ShowObject;
+};
+
+Object objects[50];
+
+int setArr(char arr[][201], int x, int y, char V, int ObjectCounter){
+	for(int i = 0; i < ObjectCounter; i++){
+		Object & obj = objects[i];
+		if(obj.pos.x == x && obj.pos.y == y){
+			obj.isSeen = true;
+		}	
 	}
+	arr[x][y] = V;
 }
 
-int line(Point StartingPoint, Point LinePoint, char arr[][201], bool &isSeen){
+int line(Point StartingPoint, Point LinePoint, char arr[][201], int ObjectCounter){
     int newX = StartingPoint.x;
     int	newY = StartingPoint.y;
 
 	float sdx = LinePoint.x - StartingPoint.x;
 	float sdy = LinePoint.y - StartingPoint.y;
+
 	float dx = abs(sdx) + 1;
 	float dy = abs(sdy) + 1;
 
 	float tgd = dx / dy;
 
-	if (sdx * sdy < 0) {
+	if (sdx * sdy < 0){
 		tgd = -tgd;
 	}
 
 	float e = 0;
 
-    for(int iter = 0; iter<dy; iter++){
+    for(int iter = 0; iter < dy; iter++){
 
 		e += tgd;
 
@@ -45,99 +57,101 @@ int line(Point StartingPoint, Point LinePoint, char arr[][201], bool &isSeen){
 		if(LinePoint.x < StartingPoint.x && LinePoint.y > StartingPoint.y){
 			if(abs(e) > 0.5){
 				while(abs(e) > 0.5){
-					setArr(arr, newX, newY, '#', isSeen);
+					setArr(arr, newX, newY, '#', ObjectCounter);
 					e += cf;
 					newX -= cf;
 				}
 			}
 			newY += cf;
-			setArr(arr, newX, newY, '#', isSeen);
+			setArr(arr, newX, newY, '#', ObjectCounter);
 		}
 
 		if(LinePoint.x < StartingPoint.x && LinePoint.y < StartingPoint.y){
 			if(abs(e) > 0.5){
 				while(abs(e) > 0.5){
-					setArr(arr, newX, newY, '#', isSeen);
+					setArr(arr, newX, newY, '#', ObjectCounter);
 					e -= cf;
 					newX -= cf;
 				}
 			}
 			newY -= cf;
-			setArr(arr, newX, newY, '#', isSeen);
+			setArr(arr, newX, newY, '#', ObjectCounter);
 		}
 
 		if(LinePoint.x > StartingPoint.x && LinePoint.y < StartingPoint.y){
 			if(abs(e) > 0.5){
 				while(abs(e) > 0.5){
-					setArr(arr, newX, newY, '#', isSeen);
+					setArr(arr, newX, newY, '#', ObjectCounter);
 					e += cf;
 					newX += cf;
 				}
 			}
 			newY -= cf;
-			setArr(arr, newX, newY, '#', isSeen);
+			setArr(arr, newX, newY, '#', ObjectCounter);
 		}
 
 		if(LinePoint.x > StartingPoint.x && LinePoint.y > StartingPoint.y){
 			if(e > 0.5){
 				while(abs(e) > 0.5){
-					setArr(arr, newX, newY, '#', isSeen);
+					setArr(arr, newX, newY, '#', ObjectCounter);
 					e -= cf;
 					newX += cf;
 				}
 			}
 			newY += cf;
-			setArr(arr, newX, newY, '#', isSeen);
+			setArr(arr, newX, newY, '#', ObjectCounter);
 		}
 
 		if(LinePoint.x < StartingPoint.x && LinePoint.y == StartingPoint.y){
 			while(newX > LinePoint.x){
 				newX--;
-				setArr(arr, newX, newY, '#', isSeen);
+				setArr(arr, newX, newY, '#', ObjectCounter);
 			}	
 		}
 
 		if(LinePoint.x > StartingPoint.x && LinePoint.y == StartingPoint.y){
 			while(newX < LinePoint.x){
 				newX++;
-				setArr(arr, newX, newY, '#', isSeen);
+				setArr(arr, newX, newY, '#', ObjectCounter);
 			}	
 		}
 
 		if(LinePoint.x == StartingPoint.x && LinePoint.y > StartingPoint.y){
 			newY++;
-			setArr(arr, newX, newY, '#', isSeen);
+			setArr(arr, newX, newY, '#', ObjectCounter);
 		}
 
 		if(LinePoint.x == StartingPoint.x && LinePoint.y < StartingPoint.y){
 			newY--;
-			setArr(arr, newX, newY, '#', isSeen);
+			setArr(arr, newX, newY, '#', ObjectCounter);
 		}
     }
 	return 0;
 }
 
-int print(int rows, int radius, Point StartingPoint, Point LinePoint, char arr[][201], bool &isSeen, bool Add, bool &ObjectSeen){
+int print(int rows, int radius, Point StartingPoint, Point LinePoint, char arr[][201], int ObjectCounter){
 	for(int i = 0; i < rows; i ++){
         for(int a = 0; a < rows; a++){
             arr[i][a] = ' ';
         }
     }
 
-    line(StartingPoint, LinePoint, arr, isSeen);
+    line(StartingPoint, LinePoint, arr, ObjectCounter);
 
-	if(isSeen == true && Add == true){
-		ObjectSeen = true;
-	}else if(isSeen == true && Add == false){
-		ObjectSeen = false;	
+	for(int i = 0; i < ObjectCounter; i++){
+		Object & obj = objects[i];
+		
+		if(obj.isSeen == true && obj.Add == true){
+			obj.ShowObject = true;
+		}else if(obj.isSeen == true && obj.Add == false){
+			obj.ShowObject = false;	
+		}
+
+		if(obj.ShowObject == true){
+			arr[obj.pos.x][obj.pos.y] = '0' + i;
+		}
 	}
-
-	if(ObjectSeen == true){
-		arr[objectX][objectY] = '$';
-	}else if(ObjectSeen == false){
-		arr[objectX][objectY] = ' ';
-	}
-
+	
 	for(int i = 0; i < rows; i ++){
 		for(int a = 0; a < rows; a++){
 			if((StartingPoint.x - i) * (StartingPoint.x - i) + (StartingPoint.y - a) * (StartingPoint.x - a) > radius * radius - 1){
@@ -164,13 +178,11 @@ int main(){
 	LinePoint.y = 1;
 	LinePoint.x = 1;
 
-	bool isSeen = false;
-	bool ObjectSeen = false;
-	bool Add = false;
+	int objectCounter = 0;
 
 	char input;
 
-	print(rows, radius, StartingPoint, LinePoint, arr, isSeen, Add, ObjectSeen);
+	print(rows, radius, StartingPoint, LinePoint, arr, objectCounter);
 
 	system("stty raw");
 
@@ -183,8 +195,12 @@ int main(){
 			cout << "Enter cordinates: ";
 			cin >> objectX;
 			cin >> objectY;
-			Add = true;
-			
+			Object & curObj = objects[objectCounter];
+			curObj.pos.x = objectX;
+			curObj.pos.y = objectY;
+			curObj.Add = true;
+			curObj.isSeen = false;
+			objectCounter++;
 		}
 		
 		if(input == 'q'){
@@ -192,7 +208,12 @@ int main(){
 		}
 
 		if(input == 'd'){
-			Add = false;
+			int objId;
+			cout << "Enter object to delete: ";
+			cin >> objId;
+			Object & curObj = objects[objId];
+			curObj.Add = false;
+			// objectCounter--;
 		}
 
 		system("clear");
@@ -200,25 +221,27 @@ int main(){
 		if(input == 'e'){
 			if(LinePoint.y != rows - 1 && LinePoint.x == 1){
 				LinePoint.y++;
-				print(rows, radius, StartingPoint, LinePoint, arr, isSeen, Add, ObjectSeen);
+				print(rows, radius, StartingPoint, LinePoint, arr, objectCounter);
 			}
 
 			else if(LinePoint.x != rows - 1 && LinePoint.y > 1){
 				LinePoint.x++;
-				print(rows, radius, StartingPoint, LinePoint, arr, isSeen, Add, ObjectSeen);
+				print(rows, radius, StartingPoint, LinePoint, arr, objectCounter);
 			}
 
 			else if(LinePoint.y > 1 && LinePoint.x == rows - 1){
 				LinePoint.y--;
-				print(rows, radius, StartingPoint, LinePoint, arr, isSeen, Add, ObjectSeen);
+				print(rows, radius, StartingPoint, LinePoint, arr, objectCounter);
 			}
 
 			else if(LinePoint.x > 1 && LinePoint.y == 1){
 				LinePoint.x--;
-				print(rows, radius, StartingPoint, LinePoint, arr, isSeen, Add, ObjectSeen);
+				print(rows, radius, StartingPoint, LinePoint, arr, objectCounter);
 			}
+		}
+		for(int i = 0; i < objectCounter; i++){
+			objects[i].isSeen = false;
 		}	
-		isSeen = false;
     }
 	system("stty cooked");
 
