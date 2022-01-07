@@ -165,7 +165,7 @@ int print(int rows, int radius, Point StartingPoint, Point LinePoint, char arr[]
 }
 
 int main(){
-    int radius = 18;
+    int radius = 8;
     char arr[201][201] = {0};
 	struct Point LinePoint;
 	struct Point StartingPoint;
@@ -192,15 +192,20 @@ int main(){
 
 		cout << "'\n";
 		if(input == 'a'){
+			system("stty cooked");
+
 			cout << "Enter cordinates: ";
-			cin >> objectX;
-			cin >> objectY;
+			cin >> objectX >> objectY;
+
 			Object & curObj = objects[objectCounter];
+
 			curObj.pos.x = objectX;
 			curObj.pos.y = objectY;
 			curObj.Add = true;
 			curObj.isSeen = false;
 			objectCounter++;
+
+			system("stty raw");
 		}
 		
 		if(input == 'q'){
@@ -213,7 +218,6 @@ int main(){
 			cin >> objId;
 			Object & curObj = objects[objId];
 			curObj.Add = false;
-			// objectCounter--;
 		}
 
 		system("clear");
@@ -241,7 +245,7 @@ int main(){
 		}
 		for(int i = 0; i < objectCounter; i++){
 			objects[i].isSeen = false;
-		}	
+		}
     }
 	system("stty cooked");
 
